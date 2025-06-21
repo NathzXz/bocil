@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Galeri Genza</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: sans-serif;
+      background: #000;
+      color: #fff;
+      overflow-x: hidden;
+    }
+
+    .intro {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      z-index: 999;
+    }
+
+    .intro h1 {
+      font-size: 24px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .intro button {
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      background: #00ff88;
+      color: #000;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    .slider {
+      display: flex;
+      transition: transform 0.4s ease;
+      width: 600%;
+    }
+
+    .slider-container {
+      overflow: hidden;
+      width: 100vw;
+      height: 100vh;
+      position: relative;
+    }
+
+    .slider img {
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+    }
+
+    .dots {
+      position: absolute;
+      bottom: 20px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .dots span {
+      height: 12px;
+      width: 12px;
+      margin: 0 5px;
+      background-color: #bbb;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .dots .active {
+      background-color: white;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Intro Screen -->
+<div class="intro" id="intro">
+  <h1>Selamat Datang di Web Genza</h1>
+  <button onclick="closeIntro()">OK</button>
+</div>
+
+<!-- Slider Container -->
+<div class="slider-container" id="sliderContainer">
+  <div class="slider" id="slider">
+    <img src="https://pomf2.lain.la/f/rzvanwnn.jpg" alt="Foto 1">
+    <img src="https://pomf2.lain.la/f/ys8urdlg.jpg" alt="Foto 2">
+    <img src="https://pomf2.lain.la/f/caby9s6f.jpg" alt="Foto 3">
+    <img src="https://pomf2.lain.la/f/skt45mwe.jpg" alt="Foto 4">
+    <img src="https://pomf2.lain.la/f/u37zstrs.jpg" alt="Foto 5">
+    <img src="https://pomf2.lain.la/f/49wm2uwy.jpg" alt="Foto 6">
+  </div>
+  <div class="dots" id="dots">
+    <span class="active"></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<script>
+  let currentIndex = 0;
+  const slider = document.getElementById("slider");
+  const dots = document.querySelectorAll(".dots span");
+
+  function updateSlider() {
+    slider.style.transform = `translateX(-${currentIndex * 100}vw)`;
+    dots.forEach(dot => dot.classList.remove("active"));
+    dots[currentIndex].classList.add("active");
+  }
+
+  // Touch Swipe Support
+  let startX = 0;
+  let isDown = false;
+
+  slider.addEventListener("touchstart", e => {
+    isDown = true;
+    startX = e.touches[0].clientX;
+  });
+
+  slider.addEventListener("touchmove", e => {
+    if (!isDown) return;
+    let moveX = e.touches[0].clientX;
+    let diff = startX - moveX;
+
+    if (diff > 50) {
+      // Swipe Left
+      currentIndex = (currentIndex + 1) % 6;
+      updateSlider();
+      isDown = false;
+    } else if (diff < -50) {
+      // Swipe Right
+      currentIndex = (currentIndex - 1 + 6) % 6;
+      updateSlider();
+      isDown = false;
+    }
+  });
+
+  function closeIntro() {
+    document.getElementById("intro").style.display = "none";
+  }
+</script>
+
+</body>
+</html>
